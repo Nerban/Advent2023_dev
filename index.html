@@ -14,6 +14,16 @@
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
 	</head>
 	<body>
+
+		<style>
+			.fragment.blur {
+			  filter: blur(30px) grayscale(100);
+			}
+			.fragment.blur.visible {
+			  filter: none;
+			}
+		</style>
+
 		<div class="reveal">
 			<div class="slides">
 				<!-- start page -->
@@ -51,15 +61,19 @@
 				<!-- 1.12 -->
 				<section>
 					<!--Artwork-->
-					<section>
+					<section data-transition="zoom">
 						<h3 >Artwork</h3>
-						<small 
-						class="fragment fade-up"
-						data-fragment-index="1">Omnath, Locus of All  [51/81] </small>
+						<div class="r-stack mb-5">
+							<small class="fragment fade-out " data-fragment-index="1">???</small>
+							<small 
+							class="fragment fade-up"
+							data-fragment-index="1">Omnath, Locus of All  [51/81] </small>
+						</div>
+						
 						<hr>
 						<div class="h-1/4 grid  place-items-center ">
 							<img 
-							class="fragment fade-down w-2/3 shadow-xl opacity-100 rounded-3xl" 
+							class="fragment custom blur w-2/3 shadow-xl opacity-100 rounded-3xl" 
 							data-fragment-index="1"
 							src="img/1/art.png">
 						</div>
@@ -241,15 +255,20 @@
 				<!-- 2.12 -->
 				<section>
 					<!--Artwork-->
-					<section>
+					<section data-transition="zoom">
 						<h3 >Artwork</h3>
-						<small 
+						<div class="r-stack mb-5">
+							<small class="fragment fade-out " data-fragment-index="1">???</small>
+							<small 
 						class="fragment fade-up"
-						data-fragment-index="1">Skithiryx, the Blight Dragon [71/81] </small>
+						data-fragment-index="1">
+							Skithiryx, the Blight Dragon [71/81] 
+						</small>
+						</div>
 						<hr>
 						<div class="h-1/4 grid  place-items-center ">
 							<img 
-							class="fragment fade-down w-1/3 shadow-xl opacity-100 rounded-3xl" 
+							class="fragment custom blur w-1/3 shadow-xl opacity-100 rounded-3xl" 
 							data-fragment-index="1"
 							src="img/2/art.png">
 						</div>
@@ -436,15 +455,19 @@
 				<!-- 3.12 -->
 				<section>
 					<!--Artwork-->
-					<section>
+					<section data-transition="zoom">
 						<h3 >Artwork</h3>
-						<small 
-						class="fragment fade-up"
-						data-fragment-index="1">Moment of Truth  [14/81] </small>
+						<div class="r-stack mb-5">
+							<small class="fragment fade-out " data-fragment-index="1">???</small>
+							<small 
+							class="fragment fade-up"
+							data-fragment-index="1">Moment of Truth  [14/81] </small>
+						</div>
+						
 						<hr>
 						<div class="h-1/4 grid  place-items-center ">
 							<img 
-							class="fragment fade-down w-2/3 shadow-xl opacity-100 rounded-3xl" 
+							class="fragment custom blur w-2/3 shadow-xl opacity-100 rounded-3xl" 
 							data-fragment-index="1"
 							src="img/3/art.png">
 						</div>
