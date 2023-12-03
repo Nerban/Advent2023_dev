@@ -30,7 +30,7 @@ export default {
 	controlsBackArrows: 'faded',
 
 	// Display a presentation progress bar
-	progress: true,
+	progress: false,
 
 	// Display the page number of the current slide
 	// - true:    Show slide number
@@ -85,7 +85,7 @@ export default {
 	disableLayout: false,
 
 	// Enable the slide overview mode
-	overview: true,
+	overview: false,
 
 	// Vertical centering of slides
 	center: true,
@@ -215,7 +215,7 @@ export default {
 	defaultTiming: null,
 
 	// Enable slide navigation via mouse wheel
-	mouseWheel: false,
+	mouseWheel: true,
 
 	// Opens links in an iframe preview overlay
 	// Add `data-preview-link` and `data-preview-link="false"` to customise each link
@@ -301,7 +301,7 @@ export default {
 	pdfPageHeightOffset: -1,
 
 	// Number of slides away from the current that are visible
-	viewDistance: 3,
+	viewDistance: 2,
 
 	// Number of slides away from the current that are visible on mobile
 	// devices. It is advisable to set this to a lower number than
