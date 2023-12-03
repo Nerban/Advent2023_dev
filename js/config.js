@@ -85,7 +85,7 @@ export default {
 	disableLayout: false,
 
 	// Enable the slide overview mode
-	overview: false,
+	overview: true,
 
 	// Vertical centering of slides
 	center: true,
