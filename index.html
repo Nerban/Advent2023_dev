@@ -673,6 +673,29 @@
 				</section>
 			</div>
 		</div>
+		
+		<div class="header">
+			<section class="text-blue-200 font-bold ml-5 flex items-center">
+					<!--<a href="#/0">Back to the first</a>-->
+			</section>
+		</div>
+		
+		<script>
+			function add_header() {
+			  let header = document.querySelector("div.header");
+			  let reveal = document.querySelector(".reveal");
+			  reveal.insertBefore(header, reveal.firstChild);
+			}
+		  
+			function add_footer() {
+			  let header = document.querySelector("div.footer");
+			  let reveal = document.querySelector(".reveal");
+			  reveal.insertBefore(header, reveal.firstChild);
+			}
+			
+			window.onload = add_header();
+			window.onload = add_footer();
+		  </script>
 
 		<script src="dist/reveal.js"></script>
 		<script src="plugin/notes/notes.js"></script>
@@ -689,5 +712,9 @@
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
 			});
 		</script>
+
+
+
+
 	</body>
 </html>
