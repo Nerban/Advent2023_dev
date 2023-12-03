@@ -301,7 +301,7 @@ export default {
 	pdfPageHeightOffset: -1,
 
 	// Number of slides away from the current that are visible
-	viewDistance: 2,
+	viewDistance: 3,
 
 	// Number of slides away from the current that are visible on mobile
 	// devices. It is advisable to set this to a lower number than
