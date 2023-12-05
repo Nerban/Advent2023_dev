@@ -153,13 +153,25 @@
 								<div class="grid place-items-center r-stack">
 									<img data-fragment-index="8" 
 										class="fragment fade-out shadow-xl  opacity-100 rounded-xl" data-src="img/card_back.jpg">
-									<a class="grid place-items-center fragment fade-down" target="_blank" data-fragment-index="8" 
-										href="https://scryfall.com/card/mom/240/invasion-of-pyrulea-gargantuan-slabhorn">
-										<img  class="shadow-md  opacity-100 rounded-xl" 
-											data-src="img/1/com7.jpg"
-											onmouseover="this.src = 'img/1/com7-alt.jpg';"
-											onmouseleave="this.src = 'img/1/com7.jpg';">
-									</a>
+
+									<div class="grid place-items-center fragment fade-down" data-fragment-index="8">
+
+											<div class="cursor-pointer text-white text-md rounded-full z-10 font-semi-bold font-bold px-2 
+											absolute bottom-0 left-0"
+											onclick="toggleImg('com1-7')">
+												<span class="drop-shadow-sm hover:text-blue-200 ml-1 mb-3">&#10227;</span>  
+											</div>
+											<a target="_blank"  
+											href="https://scryfall.com/card/mom/240/invasion-of-pyrulea-gargantuan-slabhorn">
+
+											<img id="com1-7" 
+											org="img/1/com7.jpg" 
+											trs="img/1/com7-alt.jpg" 
+											class="shadow-md  object-top opacity-100 rounded-xl" 
+											data-src="img/1/com7.jpg">
+										</a>
+									</div>
+
 								</div>
 						</div>
 						</div>
@@ -917,6 +929,11 @@
 		</div>
 		
 		<script>
+			function toggleImg(id){
+				var img = document.getElementById(id);
+				img.src = img.src.includes(img.getAttribute("trs"))  ? img.getAttribute("org") : img.getAttribute("trs");
+			}
+
 			function add_header() {
 			  let header = document.querySelector("div.header");
 			  let reveal = document.querySelector(".reveal");
@@ -929,8 +946,8 @@
 			  reveal.insertBefore(header, reveal.firstChild);
 			}
 			
-			window.onload = add_header();
-			window.onload = add_footer();
+			//window.onload = add_header();
+			//window.onload = add_footer();
 		  </script>
 
 		<script src="dist/reveal.js"></script>
