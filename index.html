@@ -44,6 +44,33 @@
 			  console.log(myJson.name)
 			}
 
+			const populateFoilCard = async (id) => {
+			  var scry_id = id.split("_")[1];
+			  console.log(scry_id);
+			  const Target = document.getElementById(id)
+			  var SPAN = Target.getElementsByTagName("small")[1];
+			  var IMG = Target.getElementsByTagName("img");
+			  var LINK = Target.getElementsByTagName("a")[0];
+			  var DIV = Target.getElementsByTagName("div")[0];
+			
+			  var imgUri;
+			  const response = await fetch("https://api.scryfall.com/cards/"+scry_id,{method: "GET"});
+			  const myJson = await response.json();
+				if(myJson.layout === "transform" || myJson.layout === "double_faced_token")
+				{
+					imgUri = [myJson.card_faces[0].image_uris.large,myJson.card_faces[1].image_uris.large]
+					IMG[1].setAttribute("org", imgUri[0]);
+					IMG[1].setAttribute("trs", imgUri[1]);
+				}
+				else{imgUri = [myJson.image_uris.large]}
+
+			  if(SPAN !== undefined){SPAN.innerHTML = myJson.name;}
+			  IMG[1].src = imgUri[0];
+			  if(IMG[1]!= undefined){}
+			  LINK.href = myJson.scryfall_uri;
+			  console.log(myJson.name)
+			}
+
 			function toggleImg(id){
 				const Target = document.getElementById(id);
 
@@ -52,9 +79,101 @@
 
 				IMG.src = IMG.src.includes(IMG.getAttribute("trs"))  ? IMG.getAttribute("org") : IMG.getAttribute("trs");
 			}
+
+			function toggleFoilImg(id){
+				const Target = document.getElementById(id);
+
+				var IMG = Target.getElementsByTagName("img")[1];
+
+				IMG.src = IMG.src.includes(IMG.getAttribute("trs"))  ? IMG.getAttribute("org") : IMG.getAttribute("trs");
+			}
 			
 			</script>
 		<style>
+			body {
+  -webkit-perspective:5000px;
+  -moz-perspective:5000px;
+  perspective:5000px;
+  text-align:center;
+}
+
+.foil-image {
+  position:relative;
+  z-index:1;
+  overflow:hidden;
+  text-align:center;
+  
+  margin:auto;
+  transform-origin:center center;
+  -webkit-animation: move 3s infinite linear;
+  -moz-animation: move 3s infinite linear;
+  animation: move 3s infinite linear;
+}
+.foil-image::after {
+  content:' ';
+  position:absolute;
+  height:200%;
+  width:200%;
+  top:0px;
+  left:0px;
+  z-index:2;
+  -webkit-animation: moveafter 3s infinite linear;
+  -moz-animation: moveafter 3s infinite linear;
+  animation: moveafter 3s infinite linear;
+  
+background: -moz-linear-gradient(-45deg,  rgba(255,255,255,0) 0%, rgba(255,255,255,0) 45%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 55%, rgba(255,255,255,0) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(45%,rgba(255,255,255,0)), color-stop(50%,rgba(255,255,255,0.2)), color-stop(55%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */background: -webkit-linear-gradient(-45deg,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 45%,rgba(255,255,255,0.2) 50%,rgba(255,255,255,0) 55%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(-45deg,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 45%,rgba(255,255,255,0.2) 50%,rgba(255,255,255,0) 55%,rgba(255,255,255,0) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(-45deg,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 45%,rgba(255,255,255,0.2) 50%,rgba(255,255,255,0) 55%,rgba(255,255,255,0) 100%); /* IE10+ */
+background: linear-gradient(135deg,  rgba(255,255,255,0) 0%,rgba(255,255,255,0) 45%,rgba(255,255,255,0.2) 50%,rgba(255,255,255,0) 55%,rgba(255,255,255,0) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+}
+
+
+@-webkit-keyframes moveafter {
+  0% {
+    top:100%;
+    left:100%;
+  }
+  50% {
+    top:-100%;
+    left:-100%;
+  }
+  100% {
+    top:-200%;
+    left:-200%;
+  }
+}
+@-moz-keyframes moveafter {
+  0% {
+    top:100%;
+    left:100%;
+  }
+  50% {
+    top:-100%;
+    left:-100%;
+  }
+  100% {
+    top:-100%;
+    left:-100%;
+  }
+}
+@keyframes moveafter {
+  0% {
+    top:100%;
+    left:100%;
+  }
+  50% {
+    top:-100%;
+    left:-100%;
+  }
+  100% {
+    top:-200%;
+    left:-200%;
+  }
+}
+
 			.fragment.blur {
 			  filter: blur(30px) grayscale(100);
 			}
@@ -299,10 +418,12 @@
 							<img data-fragment-index="1" 
 							class="fragment fade-out w-4/12 shadow-xl opacity-100 rounded-3xl" 
 							data-src="img/card_back.jpg">
-							<a class="fragment fade-down w-full m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
+							<a class="r-stack  fragment fade-down w-full m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
 								href="https://scryfall.com/card/mom/159/ramosian-greatsword">
-								<img class="w-4/12 shadow-xl opacity-100 rounded-3xl" 
+								<div class="foil-image w-4/12 h-full block rounded-3xl"></div>
+									<img class=" w-4/12 shadow-xl opacity-100 rounded-3xl " 
 									data-src="img/1/foil.jpg">
+														
 							</a>
 						</div>	
 						</div>
@@ -508,10 +629,13 @@
 							<img data-fragment-index="1" 
 							class="fragment fade-out w-4/12 shadow-xl opacity-100 rounded-3xl" 
 							data-src="img/card_back.jpg">
-							<a class="fragment fade-down w-full m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
+
+							<a class="r-stack  fragment fade-down w-full m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
 								href="https://scryfall.com/card/mom/59/furtive-analyst">
-								<img class="w-4/12 shadow-xl opacity-100 rounded-3xl" 
+								<div class="foil-image w-4/12 h-full block rounded-3xl"></div>
+									<img class=" w-4/12 shadow-xl opacity-100 rounded-3xl " 
 									data-src="img/2/foil.jpg">
+														
 							</a>
 						</div>	
 						</div>
@@ -721,8 +845,9 @@
 							<img data-fragment-index="1" 
 							class="fragment fade-out w-4/12 shadow-xl opacity-100 rounded-3xl" 
 							data-src="img/card_back.jpg">
-							<a class="fragment fade-down w-full m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
+							<a class="r-stack fragment fade-down w-full m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
 								href="https://scryfall.com/card/mom/168/trailblazing-historian">
+								<div class="foil-image w-4/12 h-full block rounded-3xl"></div>
 								<img class="w-4/12 shadow-xl opacity-100 rounded-3xl" 
 									data-src="img/3/foil.jpg">
 							</a>
@@ -961,8 +1086,9 @@
 							<img data-fragment-index="1" 
 							class="fragment fade-out w-4/12 shadow-xl opacity-100 rounded-3xl" 
 							data-src="img/card_back.jpg">
-							<a class="fragment fade-down w-full m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
+							<a class="r-stack fragment fade-down w-full m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
 								href="https://scryfall.com/card/mul/189/shanna-sisays-legacy">
+								<div class="foil-image w-4/12 h-full block rounded-3xl"></div>
 								<img class="w-4/12 shadow-xl opacity-100 rounded-3xl" 
 									data-src="img/4/foil.jpg">
 							</a>
@@ -1192,8 +1318,9 @@
 							<img data-fragment-index="1" 
 							class="fragment fade-out w-4/12 shadow-xl opacity-100 rounded-3xl" 
 							data-src="img/card_back.jpg">
-							<a class="fragment fade-down w-full m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
+							<a class="r-stack fragment fade-down w-full m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
 								href="https://scryfall.com/card/mom/156/onakke-javelineer">
+								<div class="foil-image w-4/12 h-full block rounded-3xl"></div>
 								<img class="w-4/12 shadow-xl opacity-100 rounded-3xl" 
 									data-src="img/5/foil.jpg">
 							</a>
@@ -1329,7 +1456,32 @@
 										</a>
 									</div>  
 								</div>
-								
+								const populateCard = async (id) => {
+									var scry_id = id.split("_")[1];
+									console.log(scry_id);
+									const Target = document.getElementById(id)
+									var SPAN = Target.getElementsByTagName("small")[1];
+									var IMG = Target.getElementsByTagName("img");
+									var LINK = Target.getElementsByTagName("a")[0];
+									var DIV = Target.getElementsByTagName("div")[0];
+								  
+									var imgUri;
+									const response = await fetch("https://api.scryfall.com/cards/"+scry_id,{method: "GET"});
+									const myJson = await response.json();
+									  if(myJson.layout === "transform" || myJson.layout === "double_faced_token")
+									  {
+										  imgUri = [myJson.card_faces[0].image_uris.large,myJson.card_faces[1].image_uris.large]
+										  IMG[0].setAttribute("org", imgUri[0]);
+										  IMG[0].setAttribute("trs", imgUri[1]);
+									  }
+									  else{imgUri = [myJson.image_uris.large]}
+					  
+									if(SPAN !== undefined){SPAN.innerHTML = myJson.name;}
+									IMG[0].src = imgUri[0];
+									if(IMG[1]!= undefined){}
+									LINK.href = myJson.scryfall_uri;
+									console.log(myJson.name)
+								  }		
 						</div>
 						</div>
 					</section>
@@ -1423,11 +1575,8 @@
 						<div class="w-full bg-gray-900 bg-opacity-75">
 							<h3>Random Foilcard</h3>
 							<div>
-					
-								<div class="h-1/4 grid  mt-5 place-items-center r-stack">
-								<img data-fragment-index="1" 
-								class="fragment fade-out w-4/12 shadow-xl opacity-100 rounded-3xl" 
-								data-src="img/card_back.jpg">
+								<div class="h-1/4 grid place-items-center r-stack">
+								
 								<div id ="6_4fc23af5-18dd-45f9-8d82-76b48aaf6d4d" >
 									<div class="r-stack mb-5">
 										<small data-fragment-index="1" class="fragment fade-out">???</small>
@@ -1435,11 +1584,16 @@
 									</div>
 									
 									<hr class="mx-5">
-									<a class="fragment fade-down  m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
+									<div class="r-stack">
+									<img data-fragment-index="1" 
+										class="fragment fade-out w-1/2 shadow-xl opacity-100 rounded-3xl" data-src="img/card_back.jpg">
+									<a class="r-stack fragment fade-down m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
 										href="">
+										<div class="foil-image w-1/2 h-full block rounded-3xl"></div>
 										<img class="shadow-xl w-1/2 opacity-100 rounded-3xl" 
-										data-src  onerror="populateCard(this.parentNode.parentNode.id)">
+										data-src  onerror="populateFoilCard(this.parentNode.parentNode.parentNode.id)">
 									</a>
+								</div>
 								</div>
 							</div>
 					
@@ -1591,7 +1745,7 @@
 							<img data-fragment-index="1" 
 							class="fragment fade-out w-4/12 shadow-xl opacity-100 rounded-3xl" 
 							data-src="img/card_back.jpg">
-							<div id ="7_082e1f8f-5f73-4419-8f6c-2d5a6909dc2c" >
+							<div id ="7_81039daf-0d54-4474-a833-fa287ec10cf9" >
 								<div class="r-stack mb-5">
 									<small data-fragment-index="1" class="fragment fade-out">???</small>
 									<small data-fragment-index="1" class="fragment fade-up"></small>
@@ -1642,11 +1796,8 @@
 						<div class="w-full bg-gray-900 bg-opacity-75">
 							<h3>Random Foilcard</h3>
 							<div>
-					
-								<div class="h-1/4 grid  mt-5 place-items-center r-stack">
-								<img data-fragment-index="1" 
-								class="fragment fade-out w-4/12 shadow-xl opacity-100 rounded-3xl" 
-								data-src="img/card_back.jpg">
+								<div class="h-1/4 grid place-items-center r-stack">
+								
 								<div id ="7_896043a7-c7a2-4542-8739-7b4f09c6e1f1" >
 									<div class="r-stack mb-5">
 										<small data-fragment-index="1" class="fragment fade-out">???</small>
@@ -1654,16 +1805,21 @@
 									</div>
 									
 									<hr class="mx-5">
-									<a class="fragment fade-down  m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
+									<div class="r-stack">
+									<img data-fragment-index="1" 
+										class="fragment fade-out w-1/2 shadow-xl opacity-100 rounded-3xl" data-src="img/card_back.jpg">
+									<a class="r-stack fragment fade-down m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
 										href="">
+										<div class="foil-image w-1/2 h-full block rounded-3xl"></div>
 										<img class="shadow-xl w-1/2 opacity-100 rounded-3xl" 
-										data-src  onerror="populateCard(this.parentNode.parentNode.id)">
+										data-src  onerror="populateFoilCard(this.parentNode.parentNode.parentNode.id)">
 									</a>
+								</div>
 								</div>
 							</div>
 					
 							</div></div>
-
+							
 					</section>
 
 					<!--Token-->
@@ -1695,6 +1851,265 @@
 								</div>
 							</div>
 						</div>
+					</section>
+
+				</section>
+				<!-- 8-12 -->
+				<section>
+					<!--Artwork-->
+					<section data-transition="zoom">
+						<h3 >Artwork</h3>
+						<div class="r-stack mb-5">
+							<small class="fragment fade-out " data-fragment-index="1">???</small>
+							<small 
+							class="fragment fade-up"
+							data-fragment-index="1">Lurrus of the Dream-Den  [81/81] </small>
+						</div>
+						
+						<hr>
+						<div class="h-1/4 grid  place-items-center ">
+							<img 
+							class="fragment custom blur w-1/3 shadow-xl opacity-100 rounded-3xl" 
+							data-fragment-index="1"
+							src="img/8/art.png">
+						</div>
+					</section >
+					<!--Common-->
+					<section data-background-image="img/8/art.png" data-background-opacity="0.5">
+						<div class="w-full bg-gray-900 bg-opacity-75">
+						<h3 >Commons</h3>
+						<hr class="mx-5">
+						<div class="w-full grid grid-cols-4 px-24 grid-rows-2">
+							
+							<div class="grid place-items-center mt-5 r-stack shiny">
+								<img data-fragment-index="1" class="fragment fade-out shadow-xl  opacity-100 rounded-xl" data-src="img/card_back.jpg">
+								<div id ="8_21041ed6-8f13-4909-a2c3-fa4894a2d1e3"  class="fragment fade-down r-stack" data-fragment-index="1">
+									<div class="foil-image w-full h-full block rounded-3xl"></div>
+									<a class="grid place-items-center" target="_blank" href="#">
+										<img  class="shadow-md w-full opacity-100 rounded-xl" data-src  onerror="populateCard(this.parentNode.parentNode.id)">
+									</a>
+								</div>  
+							</div>
+
+							<div class="grid place-items-center mt-5 r-stack">
+								<img data-fragment-index="2" class="fragment fade-out shadow-xl  opacity-100 rounded-xl" data-src="img/card_back.jpg">
+								<div id ="8_0ac76be5-3a2c-499e-830a-bd02eec517ce" class=" fragment fade-down" data-fragment-index="2" >
+									<a class="grid place-items-center" target="_blank" href="#">
+										<img  class="shadow-md w-full opacity-100 rounded-xl" data-src  onerror="populateCard(this.parentNode.parentNode.id)">
+									</a>
+								</div>  
+							</div>
+
+							<div class="grid place-items-center mt-5 r-stack">
+								<img data-fragment-index="3" class="fragment fade-out shadow-xl opacity-100 rounded-xl" data-src="img/card_back.jpg">
+								<div id ="8_83d89bd5-95cc-41fc-aea2-2dde52231919" class=" fragment fade-down" data-fragment-index="3" >
+									<a class="grid place-items-center" target="_blank" href="#">
+										<img  class="shadow-md w-full opacity-100 rounded-xl" data-src  onerror="populateCard(this.parentNode.parentNode.id)">
+									</a>
+								</div>  
+							</div>
+
+							<div class="grid place-items-center mt-5 r-stack">
+								<img data-fragment-index="4" class="fragment fade-out shadow-xl opacity-100 rounded-xl" data-src="img/card_back.jpg">
+								<div id ="8_49a5e7de-43cc-488b-99a4-7d173b42d5dc" class=" fragment fade-down" data-fragment-index="4" >
+									<a class="grid place-items-center" target="_blank" href="#">
+										<img  class="shadow-md w-full opacity-100 rounded-xl" data-src  onerror="populateCard(this.parentNode.parentNode.id)">
+									</a>
+								</div>  
+							</div>
+
+							<div class="grid place-items-center r-stack">
+								<img data-fragment-index="5" class="fragment fade-out shadow-xl opacity-100 rounded-xl" data-src="img/card_back.jpg">
+								<div id ="8_e1d2aa39-b876-4136-8e16-5272a8083235" class=" fragment fade-down" data-fragment-index="5" >
+									<a class="grid place-items-center" target="_blank" href="#">
+										<img  class="shadow-md w-full opacity-100 rounded-xl" data-src  onerror="populateCard(this.parentNode.parentNode.id)">
+									</a>
+								</div>  
+							</div>
+
+								<div class="grid place-items-center r-stack">
+									<img data-fragment-index="6" class="fragment fade-out shadow-xl mb-12 opacity-100 rounded-xl" data-src="img/card_back.jpg">
+									
+									<div id ="8_40ab763d-05ee-408d-aeba-eaf18c4f2e21" class="fragment fade-down" data-fragment-index="6" >
+										<div class="cursor-pointer drop-shadow-sm hover:text-blue-200 text-white text-md rounded-full z-10 font-semi-bold font-bold px-2 absolute bottom-0 left-0"
+										onclick="toggleImg(this.parentNode.id)" >&#10227;</div>	
+										<a class=" place-items-center" target="_blank" href="#">
+											<img class="shadow-md w-full opacity-100 rounded-xl" data-src org="" trs="" onerror="populateCard(this.parentNode.parentNode.id)">
+										</a>
+									</div>  
+								</div>
+								<div class="grid place-items-center r-stack">
+									<img data-fragment-index="7" class="fragment fade-out shadow-xl mb-12 opacity-100 rounded-xl" data-src="img/card_back.jpg">
+									
+									<div id ="8_92f5b177-b0c6-4573-b860-f75dad1941bd" class="fragment fade-down" data-fragment-index="7" >
+										<div class="cursor-pointer drop-shadow-sm hover:text-blue-200 text-white text-md rounded-full z-10 font-semi-bold font-bold px-2 absolute bottom-0 left-0"
+										onclick="toggleImg(this.parentNode.id)" >&#10227;</div>	
+										<a class=" place-items-center" target="_blank" href="#">
+											<img class="shadow-md w-full opacity-100 rounded-xl" data-src org="" trs="" onerror="populateCard(this.parentNode.parentNode.id)">
+										</a>
+									</div>  
+								</div>
+								
+								<div class="grid place-items-center  r-stack">
+									<img data-fragment-index="8" class="fragment fade-out shadow-xl opacity-100 rounded-xl" data-src="img/card_back.jpg">
+									<div id ="8_43e4ca86-0ba5-457c-bd18-9c4cc63e47d3" class=" fragment fade-down" data-fragment-index="8" >
+										<a class=" place-items-center" target="_blank" href="#">
+											<img  class="shadow-md w-full opacity-100 rounded-xl" data-src  onerror="populateCard(this.parentNode.parentNode.id)">
+										</a>
+									</div>  
+								</div>
+						</div>
+						</div>
+					</section>
+					<!--wildcard-->
+					<section data-background-image="img/7/art.png" data-background-opacity="0.5">
+						<div class="w-full bg-gray-900 bg-opacity-75">
+						<h3>Wildcard</h3>
+						
+						<div>
+
+							<div class="h-1/4 grid  mt-5 place-items-center r-stack">
+							<img data-fragment-index="1" 
+							class="fragment fade-out w-4/12 shadow-xl opacity-100 rounded-3xl" 
+							data-src="img/card_back.jpg">
+							<div id ="8_ab58b800-2caa-4b0b-9548-9c43e97bc213" >
+								<div class="r-stack mb-5">
+									<small data-fragment-index="1" class="fragment fade-out">???</small>
+									<small data-fragment-index="1" class="fragment fade-up"></small>
+								</div>
+								
+								<hr class="mx-5">
+								<a class="fragment fade-down  m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
+									href="">
+									<img class="shadow-xl w-1/2 opacity-100 rounded-3xl" 
+									data-src  onerror="populateCard(this.parentNode.parentNode.id)">
+								</a>
+							</div>
+						</div>
+
+						</div></div>
+					</section>
+					<!--mythic-->
+					<section data-background-image="img/7/art.png" data-background-opacity="0.5">
+						<div class="w-full bg-gray-900 bg-opacity-75">
+						<h3>Rare/Mythic</h3>
+						<div>
+							<div class="h-1/4 grid  mt-5 place-items-center r-stack">
+								<img data-fragment-index="1" 
+								class="fragment fade-out w-4/12 shadow-xl opacity-100 rounded-3xl" 
+								data-src="img/card_back.jpg">
+
+								<div id ="8_77720d2e-2b7b-492b-852c-eea5061eb31b">
+									<div class="r-stack mb-5 w-full mb-5  text-center">
+										<small data-fragment-index="1" class="fragment fade-out">???</small>
+										<small data-fragment-index="1" class="fragment fade-up"></small>
+									</div>
+									
+									<hr class="mx-5">
+
+									<div data-fragment-index="1" class="fragment fade-down m-auto">
+										<div class="w-1/3 cursor-pointer drop-shadow-sm hover:text-blue-200 text-white text-md rounded-full z-10 font-bold px-2 absolute top-0 right-0" >
+											<h2 onclick="toggleImg(this.parentNode.parentNode.parentNode.id)">&#10227;</h2> </div>	
+										<a class=" m-auto grid place-items-center" target="_blank" href="#">
+											<img class="shadow-md w-1/2 opacity-100 rounded-3xl" data-src org="" trs="" onerror="populateCard(this.parentNode.parentNode.parentNode.id)">
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</section>
+					<!--show-->
+					<section data-background-image="img/7/art.png" data-background-opacity="0.5">
+						<div class="w-full bg-gray-900 bg-opacity-75">
+						<h3>Showcase</h3>
+						<div>
+
+							<div class="h-1/4 grid  mt-5 place-items-center r-stack">
+							<img data-fragment-index="1" 
+							class="fragment fade-out w-4/12 shadow-xl opacity-100 rounded-3xl" 
+							data-src="img/card_back.jpg">
+							<div id ="8_9cd2b567-0cf7-4441-b3ce-e31141dd91c8" >
+								<div class="r-stack mb-5">
+									<small data-fragment-index="1" class="fragment fade-out">???</small>
+									<small data-fragment-index="1" class="fragment fade-up"></small>
+								</div>
+								
+								<hr class="mx-5">
+								<a class="fragment fade-down  m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
+									href="">
+									<img class="shadow-xl w-1/2 opacity-100 rounded-3xl" 
+									data-src  onerror="populateCard(this.parentNode.parentNode.id)">
+								</a>
+							</div>
+						</div>
+
+						</div></div>
+					</section>
+					<!--foil-->
+					
+					<section data-background-image="img/7/art.png" data-background-opacity="0.5">
+						<div class="w-full bg-gray-900 bg-opacity-75">
+							<h3>Random Foilcard</h3>
+							<div>
+								<div class="h-1/4 grid  mt-5 place-items-center r-stack">
+									
+	
+									<div id ="8_dc1454ce-bb49-4b4f-bbca-d77387fa4966">
+										<div class="r-stack mb-5 w-full mb-5  text-center">
+											<small data-fragment-index="1" class="fragment fade-out">???</small>
+											<small data-fragment-index="1" class="fragment fade-up"></small>
+										</div>
+										
+										<hr class="mx-5">
+										<div class="r-stack">
+											<img data-fragment-index="1" class="fragment fade-out w-1/2 shadow-xl opacity-100 rounded-3xl"data-src="img/card_back.jpg">
+	
+											<div data-fragment-index="1" class="fragment fade-down m-auto">
+												<div class="w-1/3 cursor-pointer drop-shadow-sm hover:text-blue-200 text-white text-md rounded-full z-10 font-bold px-2 absolute top-0 right-0" >
+													<h2 onclick="toggleFoilImg(this.parentNode.parentNode.parentNode.parentNode.id)">&#10227;</h2> </div>	
+												<div class="r-stack">	
+													<div class="foil-image w-1/2 h-full block rounded-3xl"></div>
+													<a class=" m-auto grid place-items-center" target="_blank" href="#">
+														<img class="shadow-md w-1/2 opacity-100 rounded-3xl" data-src org="" trs="" onerror="populateFoilCard(this.parentNode.parentNode.parentNode.parentNode.parentNode.id)">
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>	
+								</div>
+							</div>
+						</div>
+
+					</section>
+
+					<!--Token -->
+					<section data-background-image="img/7/art.png" data-background-opacity="0.5">
+						<div class="w-full bg-gray-900 bg-opacity-75">
+						<h3>Token Slot</h3>
+
+						<div>
+
+							<div class="h-1/4 grid  mt-5 place-items-center r-stack">
+							<img data-fragment-index="1" 
+							class="fragment fade-out w-4/12 shadow-xl opacity-100 rounded-3xl" 
+							data-src="img/card_back.jpg">
+							<div id ="8_6d02a57e-6c76-491c-85f8-8f4d825be2c2" >
+								<div class="r-stack mb-5">
+									<small data-fragment-index="1" class="fragment fade-out">???</small>
+									<small data-fragment-index="1" class="fragment fade-up"></small>
+								</div>
+								
+								<hr class="mx-5">
+								<a class="fragment fade-down  m-auto grid place-items-center" target="_blank" data-fragment-index="1" 
+									href="">
+									<img class="shadow-xl w-1/2 opacity-100 rounded-3xl" 
+									data-src  onerror="populateCard(this.parentNode.parentNode.id)">
+								</a>
+							</div>
+						</div>
+
+						</div></div>
 					</section>
 
 				</section>
