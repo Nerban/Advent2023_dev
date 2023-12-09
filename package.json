@@ -1,104 +1,28 @@
 {
-  "name": "reveal.js",
-  "version": "5.0.3",
-  "description": "The HTML Presentation Framework",
-  "homepage": "https://revealjs.com",
-  "subdomain": "revealjs",
-  "main": "dist/reveal.js",
-  "module": "dist/reveal.esm.js",
-  "license": "MIT",
+  "name": "reveal-eleventy-template",
+  "version": "1.0.0",
+  "description": "Template for creating presentations",
   "scripts": {
-    "test": "gulp test",
-    "start": "gulp serve",
-    "build": "gulp build"
-  },
-  "author": {
-    "name": "Hakim El Hattab",
-    "email": "hakim.elhattab@gmail.com",
-    "web": "https://hakim.se"
+    "start": "eleventy --serve --quiet",
+    "build": "NODE_ENV=production eleventy",
+    "tidy": "prettier ./src --write"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/hakimel/reveal.js.git"
+    "url": "git+https://github.com/Bullrich/reveal-eleventy-template.git"
   },
-  "engines": {
-    "node": ">=18.0.0"
+  "author": "Javier Bullrich <javier@bullrich.dev>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bullrich/reveal-eleventy-template/issues"
   },
-  "keywords": [
-    "reveal",
-    "slides",
-    "presentation"
-  ],
+  "homepage": "https://github.com/Bullrich/reveal-eleventy-template#readme",
+  "dependencies": {
+    "reveal.js": "^4.6.1"
+  },
+  "main": ".eleventy.js",
   "devDependencies": {
-    "@babel/core": "^7.23.2",
-    "@babel/eslint-parser": "^7.22.15",
-    "@babel/preset-env": "^7.23.2",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-terser": "^0.4.4",
-    "babel-plugin-transform-html-import-to-string": "2.0.0",
-    "colors": "^1.4.0",
-    "core-js": "^3.33.1",
-    "fitty": "^2.3.7",
-    "glob": "^10.3.10",
-    "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^8.0.0",
-    "gulp-clean-css": "^4.3.0",
-    "gulp-connect": "^5.7.0",
-    "gulp-eslint": "^6.0.0",
-    "gulp-header": "^2.0.9",
-    "gulp-tap": "^2.0.0",
-    "gulp-zip": "^5.1.0",
-    "highlight.js": "^11.9.0",
-    "marked": "^4.3.0",
-    "node-qunit-puppeteer": "^2.1.2",
-    "qunit": "^2.20.0",
-    "rollup": "^4.1.5",
-    "sass": "^1.69.5",
-    "yargs": "^17.7.2"
-  },
-  "overrides": {
-    "chokidar": "3.5.3",
-    "glob-parent": "6.0.2"
-  },
-  "browserslist": "> 2%, not dead",
-  "eslintConfig": {
-    "env": {
-      "browser": true,
-      "es6": true
-    },
-    "parser": "@babel/eslint-parser",
-    "parserOptions": {
-      "sourceType": "module",
-      "allowImportExportEverywhere": true,
-      "requireConfigFile": false
-    },
-    "globals": {
-      "module": false,
-      "console": false,
-      "unescape": false,
-      "define": false,
-      "exports": false
-    },
-    "rules": {
-      "curly": 0,
-      "eqeqeq": 2,
-      "wrap-iife": [
-        2,
-        "any"
-      ],
-      "no-use-before-define": [
-        2,
-        {
-          "functions": false
-        }
-      ],
-      "new-cap": 2,
-      "no-caller": 2,
-      "dot-notation": 0,
-      "no-eq-null": 2,
-      "no-unused-expressions": 0
-    }
+    "@11ty/eleventy": "^2.0.1",
+    "prettier": "^3.0.3"
   }
 }
