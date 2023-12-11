@@ -2,7 +2,7 @@
 <header>
   <link rel="stylesheet" href="{{ 'assets/reveal/reveal.css' | url }}" />
   <link rel="stylesheet" href="{{ 'assets/reveal/theme/moon.css' | url }}" />
-  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ 'tailwindcss.css' | url }}" />
 </header>
 <title>MTG Advent 2023</title>
 
@@ -31,6 +31,7 @@
       progress: true,
       history: true,
       slideNumber: false,
+      //disableLayout: true,  // implement own css styles
       plugins: [ RevealNotes, RevealHighlight ]
     });
   </script>
