@@ -38,7 +38,7 @@
             IMG.setAttribute("trs", imgUri[1]);
             if(myJson.type_line.includes("Siege") && Target.id.split("_")[0].includes("foc")){
               IMG.setAttribute("battle", true)
-              IMG.classList.add("rotate-90")
+              IMG.classList.add("card-flip-battle");
               };
         }
         else{imgUri = [myJson.image_uris.large]}
@@ -55,15 +55,19 @@
         
         var IMG = Target.getElementsByClassName("card-image")[0];
         const isBattle = IMG.hasAttribute("battle");
-
-        IMG.src = IMG.src.includes(IMG.getAttribute("trs"))  ? IMG.getAttribute("org") : IMG.getAttribute("trs");
-
-        if(isBattle && IMG.classList.contains("rotate-90")){
-          IMG.classList.remove("rotate-90");         
-        }else if(isBattle){
-          IMG.classList.add("rotate-90");
-                   
+        if(isBattle && IMG.classList.contains("card-flip-battle")){
+          IMG.classList.remove("card-flip-battle"); 
+          IMG.classList.add("card-unflip");
+        }else if(isBattle && IMG.classList.contains("card-unflip")){
+          IMG.classList.remove("card-unflip"); 
+          IMG.classList.add("card-flip-battle");        
         }
+        setTimeout(function(){
+      IMG.src = IMG.src.includes(IMG.getAttribute("trs"))  ? IMG.getAttribute("org") : IMG.getAttribute("trs");
+    }, 300);
+        
+
+
     }
 
     
