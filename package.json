@@ -4,10 +4,10 @@
   "description": "Template for creating presentations",
   "scripts": {
     "dev": "eleventy --serve --quiet",
-    "css": "tailwindcss -i ./src/tailwind.css -o ./src/style.css --watch ",
+    "css": "tailwindcss -i ./src/tailwind.css -o ./src/style/style.css --watch ",
 
     "start": "eleventy --serve --quiet",
-    "build": "tailwindcss -i ./src/tailwind.css -o ./src/style.css && NODE_ENV=production eleventy",
+    "build": "NODE_ENV=production eleventy",
     "tidy": "prettier ./src --write"
   },
   "repository": {
