@@ -7,7 +7,7 @@
     "css": "tailwindcss -i ./src/tailwind.css -o ./dist/tailwindcss.css --watch ",
 
     "start": "eleventy --serve --quiet",
-    "build": "-rm /dist/index.html && NODE_ENV=production eleventy",
+    "build": "NODE_ENV=production eleventy",
     "tidy": "prettier ./src --write"
   },
   "repository": {
