@@ -1,9 +1,7 @@
 <script type="text/javascript">
   const buildArt= async (id, src)=>{
     const Target = document.getElementById(id);
-    console.log(Target.getAttribute("data-background-image"))
     var scry_id = Target.getAttribute("scry");
-    console.log(scry_id)
 
     const response = await fetch("https://api.scryfall.com/cards/"+scry_id,{method: "GET"});
     const myJson = await response.json();
@@ -38,6 +36,10 @@
             imgUri = [myJson.card_faces[0].image_uris.large,myJson.card_faces[1].image_uris.large]
             IMG.setAttribute("org", imgUri[0]);
             IMG.setAttribute("trs", imgUri[1]);
+            if(myJson.type_line.includes("Siege") && Target.id.split("_")[0].includes("foc")){
+              IMG.setAttribute("battle", true)
+              IMG.classList.add("rotate-90")
+              };
         }
         else{imgUri = [myJson.image_uris.large]}
 
@@ -45,16 +47,23 @@
       IMG.src = imgUri[0];
 
       LINK.href = myJson.scryfall_uri;
-      console.log(myJson.name)
     }
 
     function toggleImg(id){
         const Target = document.getElementById(id);
-
-        var transfom = id.split("_")[0].includes("trans");
+        
+        
         var IMG = Target.getElementsByClassName("card-image")[0];
+        const isBattle = IMG.hasAttribute("battle");
 
         IMG.src = IMG.src.includes(IMG.getAttribute("trs"))  ? IMG.getAttribute("org") : IMG.getAttribute("trs");
+
+        if(isBattle && IMG.classList.contains("rotate-90")){
+          IMG.classList.remove("rotate-90");         
+        }else{
+          IMG.classList.add("rotate-90");
+                   
+        }
     }
 
     
