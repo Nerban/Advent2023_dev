@@ -55,7 +55,7 @@
         "focusCards":[
             {
                 "head": "Wild Card",
-                "card": {"foil": false, "id":"93345804-dda4-42a2-84d4-8fcd376dd2d4"}
+                "card": {"foil": true, "id":"93345804-dda4-42a2-84d4-8fcd376dd2d4"}
             },
             {
                 "head": "Rare Card",

@@ -7,8 +7,13 @@ const Myclass = plugin(function ({ addUtilities }) {
       transform: "rotateY(180deg)",
     },
 
+    ".card-flip-transform":{
+      transform: "rotateY(180deg)",
+      "transition-duration": "1s"
+    },
+
     ".card-flip-battle":{
-      transform: "rotateY(360deg) rotateZ(90deg)",
+      transform: "rotateY(180deg) rotateZ(90deg)",
       "transition-duration": "1s"
     },
     ".card-unflip":{
